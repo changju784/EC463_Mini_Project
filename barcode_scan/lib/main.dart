@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
+
 void main() {
   runApp(MyApp());
 }
@@ -49,6 +50,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  String barcodeScan = 'Unknown';
 
   void _incrementCounter() {
     setState(() {
@@ -96,8 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
-            ),
+                '$barcodeScan'),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
@@ -113,9 +114,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
   Future<void> scanBarcode() async {
-    String scanResult;
     try {
-      final scanResult = await FlutterBarcodeScanner.scanBarcode(
+      final barcodeScan = await FlutterBarcodeScanner.scanBarcode(
         "#ff6666",
         "Cancel",
         true,
@@ -125,10 +125,10 @@ class _MyHomePageState extends State<MyHomePage> {
       if (!mounted) return;
 
       setState(() {
-        this.scanResult = scanResult;
+        this.barcodeScan = barcodeScan;
       });
     } on PlatformException {
-      scanResult = 'Failed to get platform version.';
+      barcodeScan = 'Failed to get platform version.';
     }
   }
 }
