@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MyApp());
@@ -131,4 +132,8 @@ class _MyHomePageState extends State<MyHomePage> {
       scanResult = 'Failed to get platform version.';
     }
   }
+}
+
+Future<http.Response> fetchAlbum() {
+  return http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
 }
