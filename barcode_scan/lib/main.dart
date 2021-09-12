@@ -6,6 +6,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+const API_PREFIX = 'k7OIzZdhsCq7Ugqfl8kHX6XDrBjFFhvTY0PfDXkz';
 
 void main() {
   runApp(MyApp());
@@ -45,7 +46,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String fdcID = 'Unknown';
   String nutInfo = 'Unknown';
+  String calories = 'Unknown';
   String barcodeScan = 'Unknown';
 
   // void _incrementCounter() {
@@ -76,7 +79,13 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
                 'barcode number: $barcodeScan'),
             Text(
-              'Nutrition Info: $nutInfo',
+              'Nutrition Info: $nutInfo',),
+            Text(
+              'FDC ID: $fdcID',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            Text(
+              'Calories: $calories Kcal',
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
@@ -121,7 +130,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> getNutrition() async {
-    nutInfo = (http.get(Uri.parse('https://api.nal.usda.gov/fdc/v1/foods/search?query=011210009301&api_key=k7OIzZdhsCq7Ugqfl8kHX6XDrBjFFhvTY0PfDXkz')
-    ).toString());
+    var response = await http.get(Uri.parse('https://api.nal.usda.gov/fdc/v1/foods/search?query=$barcodeScan&api_key=' + API_PREFIX));
+    var nut = jsonDecode(response.body);
+    fdcID = nut['foods'][0]['fdcId'].toString();
+    nutInfo = nut['foods'][0]['description'].toString();
+    calories = nut['foods'][0]['foodNutrients'][3]['value'].toString();
+
+    setState(() {
+      this.nutInfo = nutInfo;
+      this.fdcID = fdcID;
+      this.calories = calories;
+    });
   }
 }
