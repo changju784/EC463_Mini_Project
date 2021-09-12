@@ -7,26 +7,18 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
+const API_PREFIX = 'k7OIzZdhsCq7Ugqfl8kHX6XDrBjFFhvTY0PfDXkz';
+
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Barcode Scanner',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.green,
       ),
       home: MyHomePage(title: 'Barcode Scanner'),
@@ -63,13 +55,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -120,8 +108,10 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Future<void> getNutrition() async {
-    nutInfo = (http.get(Uri.parse('https://api.nal.usda.gov/fdc/v1/foods/search?query=011210009301&api_key=k7OIzZdhsCq7Ugqfl8kHX6XDrBjFFhvTY0PfDXkz')
-    ).toString());
+  Future<void> getNutrition(barcode) async {
+    var response = await http.get(Uri.parse('https://api.nal.usda.gov/fdc/v1/foods/search?query=' + barcode + '&api_key=' + API_PREFIX));
+    var jsonData = jsonDecode(response.body);
+    print(jsonData["foods"][0]['fdcId']);
+    print(jsonData["foods"][0]['description']);
   }
 }
