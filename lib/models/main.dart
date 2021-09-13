@@ -1,14 +1,21 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+
+
 const API_PREFIX = 'k7OIzZdhsCq7Ugqfl8kHX6XDrBjFFhvTY0PfDXkz';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -19,15 +26,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Barcode Scanner',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.green,
       ),
       home: MyHomePage(title: 'Barcode Scanner'),
@@ -43,7 +41,7 @@ class MyHomePage extends StatefulWidget {
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
-}
+  }
 
 class _MyHomePageState extends State<MyHomePage> {
   String fdcID = 'Unknown';
@@ -51,16 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String calories = 'Unknown';
   String barcodeScan = 'Unknown';
 
-  // void _incrementCounter() {
-  //   setState(() {
-  //     // This call to setState tells the Flutter framework that something has
-  //     // changed in this State, which causes it to rerun the build method below
-  //     // so that the display can reflect the updated values. If we changed
-  //     // _counter without calling setState(), then the build method would not be
-  //     // called again, and so nothing would appear to happen.
-  //     _counter++;
-  //   });
-  // }
+  final fireStore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -105,11 +94,24 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: getNutrition,
             tooltip: 'nut_info',
             label: Text('Get Nutrition Info'),
+          ),
+          FloatingActionButton.extended(
+            icon: Icon(Icons.add),
+            onPressed: updateData,
+            tooltip: 'update data',
+            label: Text('Store Data'),
+          ),
+          FloatingActionButton.extended(
+            icon: Icon(Icons.add),
+            onPressed: getList,
+            tooltip: 'get list',
+            label: Text('Get List'),
           )
       ]
       ),
     );
   }
+
   Future<void> scanBarcode() async {
     try {
       final barcodeScan = await FlutterBarcodeScanner.scanBarcode(
@@ -142,4 +144,23 @@ class _MyHomePageState extends State<MyHomePage> {
             this.calories = calories;
           });
     }
+
+  Future<void> updateData() async {
+    fireStore.collection("user").add(
+        {
+          "Product" : "$nutInfo",
+          "Calories" : "$calories kcal",
+          "FDC ID" : "$fdcID"
+        }).then((value){
+      print(value.id);
+    });
+  }
+
+  Future<void> getList() async {
+    fireStore.collection("user").get().then((querySnapshot) {
+      querySnapshot.docs.forEach((result) {
+        print(result.data());
+      });
+    });
+  }
   }
