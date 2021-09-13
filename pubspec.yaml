@@ -31,7 +31,6 @@ dependencies:
   qrscan: ^0.2.17
   flutter_barcode_scanner: ^2.0.0
   http: ^0.13.3
-  dio: ^4.0.0
   nutrition: ^1.0.0
   firebase_storage: ^10.0.3
   firebase_auth: ^3.1.1
@@ -47,11 +46,12 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/splash.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

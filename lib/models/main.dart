@@ -1,8 +1,10 @@
+import 'dart:ffi';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:http/http.dart' as http;
-import 'dart:async';
+
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,14 +13,46 @@ import 'package:firebase_core/firebase_core.dart';
 
 
 
+
 const API_PREFIX = 'k7OIzZdhsCq7Ugqfl8kHX6XDrBjFFhvTY0PfDXkz';
 
-void main() async {
+
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(new MaterialApp(
+    home: new SplashScreen(),
+    routes: <String, WidgetBuilder>{
+      '/HomeScreen': (BuildContext context) => new MyApp()
+    },
+  ));
 }
-
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => new _SplashScreenState();
+}
+class _SplashScreenState extends State<SplashScreen> {
+  startTime() async {
+    var _duration = new Duration(seconds: 4);
+    return new Timer(_duration, navigationPage);
+  }
+  void navigationPage() {
+    Navigator.of(context).pushReplacementNamed('/HomeScreen');
+  }
+  @override
+  void initState() {
+    super.initState();
+    startTime();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new Center(
+        child: new Image.asset('assets/splash.png'),
+      ),
+    );
+  }
+}
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -41,7 +75,7 @@ class MyHomePage extends StatefulWidget {
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
-  }
+}
 
 class _MyHomePageState extends State<MyHomePage> {
   String fdcID = 'Unknown';
@@ -74,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headline4,
             ),
             Text(
-              'Calories: $calories Kcal',
+              'Calories: $calories Kcal.',
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
@@ -111,7 +145,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
   Future<void> scanBarcode() async {
     try {
       final barcodeScan = await FlutterBarcodeScanner.scanBarcode(
