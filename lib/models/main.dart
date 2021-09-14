@@ -53,6 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -82,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String nutInfo = 'Unknown';
   String calories = 'Unknown';
   String barcodeScan = 'Unknown';
+  String name = 'Taeyhon_Paik';
 
   final fireStore = FirebaseFirestore.instance;
 
@@ -125,21 +127,15 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           FloatingActionButton.extended(
             icon: Icon(Icons.add),
-            onPressed: getNutrition,
-            tooltip: 'nut_info',
-            label: Text('Get Nutrition Info'),
-          ),
-          FloatingActionButton.extended(
-            icon: Icon(Icons.add),
             onPressed: updateData,
             tooltip: 'update data',
-            label: Text('Store Data'),
+            label: Text('Store Food'),
           ),
           FloatingActionButton.extended(
             icon: Icon(Icons.add),
-            onPressed: getList,
+            onPressed: delData,
             tooltip: 'get list',
-            label: Text('Get List'),
+            label: Text('Delete Stored Data'),
           )
       ]
       ),
@@ -162,6 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } on PlatformException {
       barcodeScan = 'Failed to get platform version.';
     }
+    getNutrition();
   }
 
   Future<void> getNutrition() async {
@@ -171,29 +168,47 @@ class _MyHomePageState extends State<MyHomePage> {
       nutInfo = nut['foods'][0]['description'].toString();
       calories = nut['foods'][0]['foodNutrients'][3]['value'].toString();
 
-      setState(() {
-            this.nutInfo = nutInfo;
-            this.fdcID = fdcID;
-            this.calories = calories;
-          });
+      setState(() {});
     }
 
   Future<void> updateData() async {
-    fireStore.collection("user").add(
-        {
-          "Product" : "$nutInfo",
-          "Calories" : "$calories kcal",
-          "FDC ID" : "$fdcID"
-        }).then((value){
-      print(value.id);
-    });
+    // fireStore.collection("user").add(
+    //     {
+    //       "Product" : "$nutInfo",
+    //       "Calories" : "$calories kcal",
+    //       "FDC ID" : "$fdcID"
+    //     }).then((value){
+    //   print(value.id);
+    // });
+
+    fireStore.collection(name).doc(nutInfo).set(
+      {
+        "Product" : "$nutInfo",
+        "Calories" : "$calories kcal",
+        "FDC ID" : "$fdcID"
+      }).then((value){
+          print(name);
+      }
+    );
+
+    getList();
   }
 
   Future<void> getList() async {
-    fireStore.collection("user").get().then((querySnapshot) {
+
+    fireStore.collection(name).get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
         print(result.data());
       });
     });
   }
+
+
+  Future<void> delData() async {
+    fireStore.collection(name).doc(nutInfo).delete().then((_) {
+    });
+  }
+
+
+
   }
