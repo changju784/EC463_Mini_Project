@@ -83,9 +83,23 @@ class _MyHomePageState extends State<MyHomePage> {
   String nutInfo = 'Unknown';
   String calories = 'Unknown';
   String barcodeScan = 'Unknown';
-  String name = 'Taeyhon_Paik';
+  String recipeName = 'Taeyhon_Paik';
+  String servingsNum = 'Unknown';
 
   final fireStore = FirebaseFirestore.instance;
+
+
+
+  final textInput = TextEditingController();
+  final servings = TextEditingController();
+  @override
+  void dispose() {
+    textInput.dispose();
+    servings.dispose();
+    super.dispose();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -99,14 +113,20 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            Text('Enter Recipe Name: ',
+              style: Theme.of(context).textTheme.headline4,),
+            TextField(controller: textInput,),
+            Text('\n\nEnter Servings For Food: ',
+              style: Theme.of(context).textTheme.headline4,),
+            TextField(controller: servings,),
             Text(
-              'barcode number: $barcodeScan'),
+              '\n\n\nbarcode number: $barcodeScan'),
             Text(
               'Nutrition Info: $nutInfo',),
             Text(
-              'FDC ID: $fdcID',
+              'Servings: $servingsNum',
               style: Theme.of(context).textTheme.headline4,
             ),
             Text(
@@ -116,28 +136,53 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+
+
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton.extended(
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.add_a_photo),
             onPressed: scanBarcode,
-            tooltip: 'barcode',
             label: Text('Scan Barcode')
           ),
           FloatingActionButton.extended(
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.system_update_tv),
             onPressed: updateData,
-            tooltip: 'update data',
             label: Text('Store Food'),
           ),
+
           FloatingActionButton.extended(
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.delete_forever),
             onPressed: delData,
-            tooltip: 'get list',
             label: Text('Delete Stored Data'),
-          )
-      ]
+          ),
+          FloatingActionButton.extended(
+            icon: Icon(Icons.text_fields),
+            onPressed: () {
+              recipeName = textInput.text.toString();
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(content: Text('New Recipe Applied!'));
+                },
+              );
+            },
+            label: Text('New Recipe Name'),
+          ),
+          FloatingActionButton.extended(
+            icon: Icon(Icons.food_bank),
+            onPressed: () {
+              servingsNum = servings.text.toString();
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(content: Text('New Recipe Applied!'));
+                },
+              );
+            },
+            label: Text('Servings for Food')),
+        ]
       ),
     );
   }
@@ -181,22 +226,22 @@ class _MyHomePageState extends State<MyHomePage> {
     //   print(value.id);
     // });
 
-    fireStore.collection(name).doc(nutInfo).set(
+    fireStore.collection(recipeName).doc(nutInfo).set(
       {
         "Product" : "$nutInfo",
         "Calories" : "$calories kcal",
         "FDC ID" : "$fdcID"
-      }).then((value){
-          print(name);
-      }
-    );
+      },
+        SetOptions(merge: true)).then((_){
+          print(recipeName);
+      });
 
     getList();
   }
 
   Future<void> getList() async {
 
-    fireStore.collection(name).get().then((querySnapshot) {
+    fireStore.collection(recipeName).get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
         print(result.data());
       });
@@ -205,10 +250,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   Future<void> delData() async {
-    fireStore.collection(name).doc(nutInfo).delete().then((_) {
+    fireStore.collection(recipeName).doc(nutInfo).delete().then((_) {
     });
   }
-
-
 
   }
