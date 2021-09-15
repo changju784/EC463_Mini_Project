@@ -59,11 +59,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Barcode Scanner',
+      title: 'EC 463 Mini_Project',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'Barcode Scanner'),
+      home: MyHomePage(title: 'EC 463 Mini_Project'),
     );
   }
 }
@@ -83,10 +83,16 @@ class _MyHomePageState extends State<MyHomePage> {
   String nutInfo = 'Unknown';
   String calories = 'Unknown';
   String barcodeScan = 'Unknown';
-  String recipeName = 'Taeyhon_Paik';
+  String recipeName = '';
   String servingsNum = 'Unknown';
+  var totalCal = 0;
 
   final fireStore = FirebaseFirestore.instance;
+
+  var fName = null;
+  var cName = null;
+  var sName = null;
+  String fin_al = '';
 
 
   final textInput = TextEditingController();
@@ -99,29 +105,27 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Text('Enter Recipe Name: ',
-              style: Theme.of(context).textTheme.headline4,),
             TextField(controller: textInput,),
-            Text('\n\nEnter Servings For Food: ',
-              style: Theme.of(context).textTheme.headline4,),
+            Text('Enter Recipe Name: ',
+              // style: Theme.of(context).textTheme.headline4,
+            ),
+
             TextField(controller: servings,),
+            Text('Enter Servings For Food: ',
+              // style: Theme.of(context).textTheme.headline4,
+            ),
             Text(
-              '\n\n\nbarcode number: $barcodeScan'),
+              '\n\nbarcode number: $barcodeScan'),
             Text(
               'Nutrition Info: $nutInfo',),
             // Text(
@@ -129,8 +133,14 @@ class _MyHomePageState extends State<MyHomePage> {
             //   style: Theme.of(context).textTheme.headline4,
             // ),
             Text(
-              'Calories: $calories Kcal.'
+              'Calories: $calories Kcal.\n\n'
             ),
+            Text(
+                'Fetch Recipe Result for "$recipeName": \n$fin_al'
+            ),
+            Text(
+                'Total Calories for "$recipeName": \n$totalCal kcal'
+            )
           ],
         ),
       ),
@@ -148,9 +158,12 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.system_update_tv),
             onPressed: updateData,
             label: Text('Store Food'),
-
           ),
-
+          FloatingActionButton.extended(
+            icon: Icon(Icons.get_app),
+            onPressed: getList,
+            label: Text('Get Recipe'),
+          ),
           FloatingActionButton.extended(
             icon: Icon(Icons.delete_forever),
             onPressed: delData,
@@ -219,29 +232,41 @@ class _MyHomePageState extends State<MyHomePage> {
     fireStore.collection(recipeName).doc(nutInfo).set(
       {
         "Product" : "$nutInfo",
-        "Calories" : (int.parse(servingsNum)*int.parse(calories)).toString() + " kcal",
+        "Calories" : (int.parse(servingsNum)*int.parse(calories)).toString(),
         "FDC ID" : "$fdcID",
         "servings " : "$servingsNum"
       },
         SetOptions(merge: true)).then((_){
           print(recipeName);
       });
-
-    getList();
   }
 
   Future<void> getList() async {
 
     fireStore.collection(recipeName).get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
-        print(result.data());
+        fName = result.data()['Product'];
+        sName = result.data()['servings '];
+        cName = result.data()['Calories'];
+        fin_al += '$fName  :  Servings: $sName  :  $cName kcal\n';
+
+        totalCal += int.parse(cName);
+        print(fin_al);
+        print(totalCal);
+
       });
     });
+
+    setState(() {});
   }
 
 
   Future<void> delData() async {
-    fireStore.collection(recipeName).doc(nutInfo).delete().then((_) {});
+    // fireStore.collection(recipeName).doc(nutInfo).delete().then((_) {});
+    fin_al = '';
+    totalCal = 0;
   }
+
+
 
   }
