@@ -1,5 +1,13 @@
 # EC 463 MiniProject
 
+Team Members:
+1. Taehyon Paik
+ - Main Parts: Back-End development.
+
+2. Jungin Chang
+ - Main Parts: Front-End development.
+
+
 Debug/Problem Documentation:
 
 09/13: 
