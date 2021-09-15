@@ -89,7 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final fireStore = FirebaseFirestore.instance;
 
 
-
   final textInput = TextEditingController();
   final servings = TextEditingController();
   @override
@@ -125,13 +124,12 @@ class _MyHomePageState extends State<MyHomePage> {
               '\n\n\nbarcode number: $barcodeScan'),
             Text(
               'Nutrition Info: $nutInfo',),
+            // Text(
+            //   'Servings: $servingsNum',
+            //   style: Theme.of(context).textTheme.headline4,
+            // ),
             Text(
-              'Servings: $servingsNum',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            Text(
-              'Calories: $calories Kcal.',
-              style: Theme.of(context).textTheme.headline4,
+              'Calories: $calories Kcal.'
             ),
           ],
         ),
@@ -150,6 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.system_update_tv),
             onPressed: updateData,
             label: Text('Store Food'),
+
           ),
 
           FloatingActionButton.extended(
@@ -177,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
               showDialog(
                 context: context,
                 builder: (context) {
-                  return AlertDialog(content: Text('New Recipe Applied!'));
+                  return AlertDialog(content: Text('Number of Servings Applied!'));
                 },
               );
             },
@@ -217,20 +216,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
   Future<void> updateData() async {
-    // fireStore.collection("user").add(
-    //     {
-    //       "Product" : "$nutInfo",
-    //       "Calories" : "$calories kcal",
-    //       "FDC ID" : "$fdcID"
-    //     }).then((value){
-    //   print(value.id);
-    // });
-
     fireStore.collection(recipeName).doc(nutInfo).set(
       {
         "Product" : "$nutInfo",
-        "Calories" : "$calories kcal",
-        "FDC ID" : "$fdcID"
+        "Calories" : (int.parse(servingsNum)*int.parse(calories)).toString() + " kcal",
+        "FDC ID" : "$fdcID",
+        "servings " : "$servingsNum"
       },
         SetOptions(merge: true)).then((_){
           print(recipeName);
@@ -250,8 +241,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   Future<void> delData() async {
-    fireStore.collection(recipeName).doc(nutInfo).delete().then((_) {
-    });
+    fireStore.collection(recipeName).doc(nutInfo).delete().then((_) {});
   }
 
   }
