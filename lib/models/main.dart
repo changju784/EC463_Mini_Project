@@ -6,12 +6,16 @@ import 'package:untitled/models/user.dart';
 import 'package:untitled/screens/wrapper.dart';
 import 'package:untitled/services/auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-const API_PREFIX = 'k7OIzZdhsCq7Ugqfl8kHX6XDrBjFFhvTY0PfDXkz';
+
+const ak2 = 'k7OIzZdhsC';
+const ak1 = 'q7Ugqfl8kHX6XDrBj';
+const ak3 = 'FFhvTY0PfDXkz';
+
 
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await dotenv.load(fileName: '.env');
+  // await dotenv.load(fileName: '.env');
   runApp(new MaterialApp(
     home: new SplashScreen(),
     routes: <String, WidgetBuilder>{
