@@ -3,6 +3,7 @@
 ## Application Name
 
 Food Scanner v2.0
+
 video link: https://youtu.be/55AnwhcNQTM
 
 -------------------
