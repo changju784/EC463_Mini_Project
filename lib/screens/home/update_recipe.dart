@@ -122,7 +122,16 @@ class _Update_RecipeState extends State<Update_Recipe> {
         RaisedButton(
             color: Colors.green[400],
             child: Text('Update Recipe', style: TextStyle(color: Colors.white),),
-            onPressed: updateData,
+            onPressed: ()
+            {
+              updateData();
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(content: Text('Recipe Updated!'));
+                },
+              );
+            },
 
         ),
       ],

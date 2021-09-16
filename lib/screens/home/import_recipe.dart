@@ -55,6 +55,8 @@ class _Import_RecipeState extends State<Import_Recipe> {
                             return AlertDialog(content: Text('New Recipe Applied!'));
                           },
                         );
+                        setState(() {
+                        });
                       }
 
                   ),
@@ -84,14 +86,34 @@ class _Import_RecipeState extends State<Import_Recipe> {
           RaisedButton(
             color: Colors.green[400],
             child: Text('Import Recipe', style: TextStyle(color: Colors.white),),
-            onPressed: getList,
-
+            onPressed: ()
+            {
+              getList();
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(content: Text('Recipe Imported!'));
+                },
+              );
+              setState(() {
+              });
+            },
           ),
           RaisedButton(
             color: Colors.green[400],
-            child: Text('Delete Recipe', style: TextStyle(color: Colors.white),),
-            onPressed: delData,
-
+            child: Text('Clear Screen', style: TextStyle(color: Colors.white),),
+            onPressed: ()
+            {
+              delData();
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(content: Text('Cleared Fetch Result!'));
+                },
+              );
+              setState(() {
+              });
+            },
           ),
 
         ]
@@ -121,7 +143,10 @@ class _Import_RecipeState extends State<Import_Recipe> {
     // fireStore.collection(recipeName).doc(nutInfo).delete().then((_) {});
     fin_al = '';
     totalCal = 0;
+
+    setState(() {});
   }
+
 
 }
 
