@@ -6,7 +6,7 @@ Food Scanner v1.1
 
 -------------------
 ## Team Members
-1) Taehyon Paik (U)
+1) **Taehyon Paik (U58182574)**
  - Back-End development
  - Barcode scanner plugins
  - REST API
@@ -14,7 +14,7 @@ Food Scanner v1.1
  - Storing API data to DB 
  - get list from DB 
 
-2. Jungin Chang (U07196971)
+2) **Jungin Chang (U07196971)**
  - Front-End development
  - Firebase email authentication
  - UI design 
@@ -35,7 +35,32 @@ Food Scanner v1.1
  - Request valid email address
  - Request more than 6 characters for password
  - Store user information to firebase
+<img src="https://user-images.githubusercontent.com/60164571/133668635-2c5025b3-fd3e-4395-88f4-2d02b0b60fe2.png"  width="300" height="500">
 
+3) Home Screen 
+ - lib/home/home.dart
+ - Two main features of this application: Update Recipe / Import Recipe 
+ - logout button navigates back to sign-in screen 
+ - Update Recipe navigates to Update Recipe screen
+ - Import Recipe navigates to Import Recipe screen
+<img src="https://user-images.githubusercontent.com/60164571/133670041-bc1a8641-92be-448f-8ea2-b45e045edf51.png"  width="300" height="500">
+
+4) Update Recipe 
+ - lib/home/update_recipe.dart
+ - Enter name of a new recipe and press send button on the right 
+ - Enter number of servings and press send button on the right 
+ - Press scan barcode button on the top right corner to open your camera and scan food barcode
+ - Barcode information including barcode, nutritient, calories appears in the center
+ - Press Update button on the bottom to send and finalize new recipe information to database
+ <img src="https://user-images.githubusercontent.com/60164571/133670267-3f749c83-c267-4935-9250-cd075d40fe16.png"  width="300" height="500">
+
+4) Import Recipe 
+ - lib/home/import_recipe.dart
+ - Enter name of recipe that you want to import and press send button on the right 
+ - Press import recipe on the bottom to get recipe information from database
+ - Recipe information includes product name, servings, and calories
+ - Press clear screen to clear all recipe information on screen
+ <img src="https://user-images.githubusercontent.com/60164571/133671191-e58673b7-43c8-4c3b-b5ae-252f39fb9337.png"  width="300" height="500">
 Debug/Problem Documentation:
 
 09/13: 
