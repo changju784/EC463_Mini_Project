@@ -64,6 +64,8 @@ class _Update_RecipeState extends State<Update_Recipe> {
                     return AlertDialog(content: Text('New Recipe Applied!'));
                   },
                 );
+                setState(() {
+                });
               }
 
             ),

@@ -21,6 +21,7 @@ class _Import_RecipeState extends State<Import_Recipe> {
   var cName = null;
   var sName = null;
   var totalCal = 0;
+  var imCount = 0;
 
   final fireStore = FirebaseFirestore.instance;
   final textInput = TextEditingController();
@@ -88,15 +89,21 @@ class _Import_RecipeState extends State<Import_Recipe> {
             child: Text('Import Recipe', style: TextStyle(color: Colors.white),),
             onPressed: ()
             {
-              getList();
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(content: Text('Recipe Imported!'));
-                },
-              );
-              setState(() {
-              });
+              if (imCount != 0) {
+                getList();
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(content: Text('Recipe Imported!'));
+                  },
+                );
+                setState(() {});
+              }
+              else {
+                imCount += 1;
+                getList();
+                setState(() {});
+              }
             },
           ),
           RaisedButton(
@@ -108,6 +115,7 @@ class _Import_RecipeState extends State<Import_Recipe> {
               showDialog(
                 context: context,
                 builder: (context) {
+                  imCount = 0;
                   return AlertDialog(content: Text('Cleared Fetch Result!'));
                 },
               );
