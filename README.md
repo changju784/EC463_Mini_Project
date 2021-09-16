@@ -82,25 +82,3 @@ Design Decisions: We decided that for importing a recipe, only some of all our f
  
  
  
-Debug/Problem Documentation:
-
-09/10:
-Can not get correct API data.
-Resolved 09/11
-
-09/11:
-Can not use the barcode scan feature because of sound_null_safety.
-Resolved after trying another method 09/11
-
-09/13: 
-Certain Barcodes don't store in firebase storage.
-Can't delete entire collection. Can only delete field in the document.
-Modified: Used clear screen feature instead of delete method. Some barcodes just don't seem to work.
-
-09/15:
-Can not clear screen right away, have to press clear, and then import.
-Resolved 09/16
-
-09/16:
-Can not make API_KEY secret from github.
-
