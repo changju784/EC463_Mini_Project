@@ -7,19 +7,22 @@ Food Scanner v2.0
 -------------------
 ## Team Members
 1) **Taehyon Paik (U58182574)**
- - Back-End development
+ - Mostly Back-End development
  - Barcode scanner plugins
  - REST API
- - Firebase Flutter system link
- - Storing API data to DB 
- - get list from DB 
+ - Link Firebase Flutter System
+ - Store/Retrieve data from Firebase Cloud
+ - UI design (Location of Features, update/import pages)
+ - Github Issues, documentation(README.md)
 
 2) **Jungin Chang (U07196971)**
- - Front-End development
+ - Mostly Front-End development
  - Firebase email authentication
- - UI design 
+ - UI design (Home, Loading, Authentication)
+ - Manage Project Files (Dividing Screens, API_KEY security)
  - Icon / Splash / loading screen
  - Github maintenance
+ - Github Wiki, documentation(README.md)
 --------------------
 ## Design Decisions and Features
 1) Sign-In
