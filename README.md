@@ -32,6 +32,7 @@ Design Decisions: We decided to put the sign in page in the first page, which en
 
 <img src="https://user-images.githubusercontent.com/60164571/133667322-e8a0dce1-55f6-46f7-bab3-9e312fcb48e6.png"  width="300" height="500">
 
+
 2) Sign-Up
  - lib/authenticate/register.dart, lib/services/auth.dart, lib/authenticate/authenticate.dart
  - Request valid email address
@@ -41,6 +42,7 @@ Design Decisions: We decided to put the sign in page in the first page, which en
 Design Decisions: We decided this as the 2nd page, if you don't have an ID, you go to the sign-up page, where you can enter a valid email address and password to continue with using the app. 
 
 <img src="https://user-images.githubusercontent.com/60164571/133668635-2c5025b3-fd3e-4395-88f4-2d02b0b60fe2.png"  width="300" height="500">
+
 
 3) Home Screen 
  - lib/home/home.dart
@@ -52,6 +54,7 @@ Design Decisions: We decided this as the 2nd page, if you don't have an ID, you 
  Design Decisions: For the 3rd page, the Home Screen needed to show a screen that can allow the user to choose which features to use. Therefore we decided to have two buttons that navigate users to their desired feature of the application.
  
 <img src="https://user-images.githubusercontent.com/60164571/133670041-bc1a8641-92be-448f-8ea2-b45e045edf51.png"  width="300" height="500">
+
 
 4) Update Recipe 
  - lib/home/update_recipe.dart
@@ -65,10 +68,11 @@ Design Decisions: We decided that for updating a recipe, only some of all our fe
 
  <img src="https://user-images.githubusercontent.com/60164571/133670267-3f749c83-c267-4935-9250-cd075d40fe16.png"  width="300" height="500">
 
+
 5) Import Recipe 
  - lib/home/import_recipe.dart
  - Enter name of recipe that you want to import and press send button on the right 
- - Press import recipe on the bottom to get recipe information from database
+ - Press import recipe on the bottom 2 times to get recipe information from database (initialize / fetch)
  - Recipe information includes product name, servings, and calories
  - Press clear screen to clear all recipe information on screen
 
@@ -77,10 +81,26 @@ Design Decisions: We decided that for importing a recipe, only some of all our f
  <img src="https://user-images.githubusercontent.com/60164571/133671191-e58673b7-43c8-4c3b-b5ae-252f39fb9337.png"  width="300" height="500">
  
  
+ 
 Debug/Problem Documentation:
+
+09/10:
+Can not get correct API data.
+Resolved 09/11
+
+09/11:
+Can not use the barcode scan feature because of sound_null_safety.
+Resolved after trying another method 09/11
 
 09/13: 
 Certain Barcodes don't store in firebase storage.
 Can't delete entire collection. Can only delete field in the document.
+Modified: Used clear screen feature instead of delete method. Some barcodes just don't seem to work.
 
+09/15:
+Can not clear screen right away, have to press clear, and then import.
+Resolved 09/16
+
+09/16:
+Can not make API_KEY secret from github.
 
