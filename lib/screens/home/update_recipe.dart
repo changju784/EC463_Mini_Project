@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:untitled/models/main.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Update_Recipe extends StatefulWidget {
   const Update_Recipe({Key? key}) : super(key: key);
@@ -22,6 +23,7 @@ class _Update_RecipeState extends State<Update_Recipe> {
   String servingsNum = 'Unknown';
   String fin_al = '';
 
+  var api_key = dotenv.env["API_KEY"];
   var fName = null;
   var cName = null;
   var sName = null;
@@ -162,7 +164,7 @@ class _Update_RecipeState extends State<Update_Recipe> {
   }
 
   Future<void> getNutrition() async {
-    var response = await http.get(Uri.parse('https://api.nal.usda.gov/fdc/v1/foods/search?query=$barcodeScan&api_key=' + API_PREFIX));
+    var response = await http.get(Uri.parse('https://api.nal.usda.gov/fdc/v1/foods/search?query=$barcodeScan&api_key=' + api_key.toString()));
     var nut = jsonDecode(response.body);
     fdcID = nut['foods'][0]['fdcId'].toString();
     nutInfo = nut['foods'][0]['description'].toString();
