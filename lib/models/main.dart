@@ -6,6 +6,7 @@ import 'package:untitled/models/user.dart';
 import 'package:untitled/screens/wrapper.dart';
 import 'package:untitled/services/auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+const API_PREFIX = 'k7OIzZdhsCq7Ugqfl8kHX6XDrBjFFhvTY0PfDXkz';
 
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();

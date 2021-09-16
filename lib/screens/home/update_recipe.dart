@@ -164,7 +164,7 @@ class _Update_RecipeState extends State<Update_Recipe> {
   }
 
   Future<void> getNutrition() async {
-    var response = await http.get(Uri.parse('https://api.nal.usda.gov/fdc/v1/foods/search?query=$barcodeScan&api_key=' + api_key.toString()));
+    var response = await http.get(Uri.parse('https://api.nal.usda.gov/fdc/v1/foods/search?query=$barcodeScan&api_key=' + API_PREFIX));
     var nut = jsonDecode(response.body);
     fdcID = nut['foods'][0]['fdcId'].toString();
     nutInfo = nut['foods'][0]['description'].toString();
